@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Wallpaper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      background: linear-gradient(135deg, #000000, #001a4d, #0d47a1);
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      padding: 40px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.5), 0 0 50px rgba(13, 71, 161, 0.3);
+      width: 800px;
+      max-width: 90vw;
+      position: relative;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    .profile-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      color: white;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(10px);
+    }
+
+    .profile-button:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .profile-button .dot {
+      width: 10px;
+      height: 10px;
+      background: #0d47a1;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(13, 71, 161, 0.8);
+    }
+
+    .profile-button .lock {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0d47a1, #1a237e);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      box-shadow: 0 0 8px rgba(13, 71, 161, 0.7);
+    }
+
+    .account {
+      margin-top: 25px;
+      text-align: center;
+      animation: fadeIn 1s ease-in 1s both;
+      display: none;
+    }
+
+    .account.open {
+      display: block;
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 30px rgba(0,0,0,0.5), 0 0 50px rgba(13, 71, 161, 0.3); }
+      to { box-shadow: 0 0 30px rgba(0,0,0,0.5), 0 0 70px rgba(13, 71, 161, 0.5); }
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      margin-bottom: 25px;
+      opacity: 0.8;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #0d47a1;
+      background: linear-gradient(to right, #0d47a1, #1a237e);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 0 15px rgba(13, 71, 161, 0.6);
+      animation: fadeIn 1s ease-in 0.4s both;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(13, 71, 161, 0.9);
+    }
+
+    .btn.locked {
+      opacity: 0.65;
+      cursor: not-allowed;
+      box-shadow: 0 0 10px rgba(13, 71, 161, 0.3);
+    }
+
+    .download-note {
+      margin-top: 12px;
+      font-size: 13px;
+      opacity: 0.8;
+      color: #e0d7ff;
+    }
+
+    .description {
+      margin-top: 25px;
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.9;
+      text-align: left;
+      animation: fadeIn 1s ease-in 0.6s both;
+    }
+
+    .description p {
+      margin-bottom: 10px;
+    }
+
+    .description ul {
+      list-style-type: disc;
+      margin-left: 20px;
+      margin-top: 10px;
+    }
+
+    .how-to-use {
+      margin-top: 25px;
+      margin-bottom: 25px;
+      animation: fadeIn 1s ease-in 0.2s both;
+    }
+
+    .how-to-use h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .step {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      width: 150px;
+      text-align: center;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .step:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(13, 71, 161, 0.5);
+    }
+
+    .step-number {
+      font-size: 32px;
+      font-weight: bold;
+      color: #0d47a1;
+      margin-bottom: 10px;
+    }
+
+    .step-text {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .tutorial {
+      margin-top: 25px;
+      margin-bottom: 25px;
+      animation: fadeIn 1s ease-in 0.2s both;
+    }
+
+    .tutorial h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .tutorial-steps {
+      text-align: left;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+    }
+
+    .tutorial-step {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      border-left: 4px solid #0d47a1;
+    }
+
+    .tutorial-step h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #e0d7ff;
+    }
+
+    .tutorial-step p {
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.9;
+      margin: 0;
+    }
+
+    .video {
+      margin-top: 25px;
+      animation: fadeIn 1s ease-in 0.8s both;
+    }
+
+    .video h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .video video {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    .account {
+      margin-top: 25px;
+      text-align: center;
+      animation: fadeIn 1s ease-in 1s both;
+    }
+
+    .upload {
+      margin-top: 25px;
+      text-align: center;
+      animation: fadeIn 1s ease-in 1.2s both;
+    }
+
+    .upload h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .image-card {
+      max-width: 500px;
+      margin: 0 auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(13, 71, 161, 0.35);
+      border: 1px solid rgba(255,255,255,0.15);
+      transform: translateY(0);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .image-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 40px rgba(13, 71, 161, 0.55);
+    }
+
+    .image-card img {
+      width: 100%;
+      display: block;
+    }
+
+    .social {
+      margin-top: 25px;
+      text-align: center;
+      animation: fadeIn 1s ease-in 0.4s both;
+    }
+
+    .social h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .social p {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 15px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .social-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(13, 71, 161, 0.5);
+    }
+
+    .scroll-prompt {
+      text-align: center;
+      margin: 20px 0;
+      animation: fadeIn 1s ease-in 0.4s both;
+    }
+
+    .scroll-prompt p {
+      font-size: 16px;
+      font-weight: bold;
+      color: #e0d7ff;
+      opacity: 0.9;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+
+    .account h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .account {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      align-items: flex-start;
+      justify-content: flex-start;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(13, 47, 100, 0.8), rgba(13, 71, 161, 0.8));
+      z-index: 1000;
+      padding: 80px 20px 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      overflow-y: auto;
+    }
+
+    .account.open {
+      display: flex;
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .account.open .form-container {
+      animation: slideDown 0.4s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close-profile {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(13, 71, 161, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    .close-profile:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(13, 71, 161, 0.8);
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 0 30px rgba(13, 71, 161, 0.4);
+      max-width: 400px;
+      margin: 0 auto;
+      animation: fadeIn 1s ease-in;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 14px;
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .btn-form {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #0d47a1, #1a237e);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-bottom: 10px;
+    }
+
+    .btn-form:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(13, 71, 161, 0.6);
+    }
+
+    .google-btn {
+      width: 100%;
+      padding: 12px;
+      background: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    .google-btn:hover {
+      background: #3367d6;
+      transform: scale(1.05);
+    }
+
+    .google-btn.loading {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .google-btn .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid       #fff;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .toggle {
+      margin-top: 15px;
+      font-size: 14px;
+      opacity: 0.8;
+      cursor: pointer;
+    }
+
+    .toggle:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="profile-button" onclick="toggleProfilePanel()">
+      <span class="lock"></span>
+      <span id="profileLabel">Profile</span>
+    </div>
+    <h1>Video Wallpaper</h1>
+    <p>dev by Abdula - PROSEP</p>
+    <p>Bring your desktop to life with live video wallpapers.</p>
+
+    <div class="social">
+      <h2>My Social</h2>
+      <p>Please follow me</p>
+      <div class="social-links">
+        <a href="https://www.youtube.com/@Prosep5" target="_blank" class="social-link"> YouTube</a>
+        <a href="https://www.instagram.com/abdulla873555/" target="_blank" class="social-link"> Instagram</a>
+        <a href="https://x.com/abdula97344" target="_blank" class="social-link"> X/a>
+        <a href="https://www.tiktok.com/@prosep5" target="_blank" class="social-link"> TikTok</a>
+      </div>
+    </div>
+
+    <div class="scroll-prompt">
+      <p>👇 Scroll down to download 👇</p>
+    </div>
+
+    <div class="how-to-use">
+      <h2>How to Use</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-text">Download the app</div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-text">Install and run</div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-text">Choose your video</div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-text">Set as wallpaper</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tutorial">
+      <h2>Detailed Tutorial</h2>
+      <div class="tutorial-steps">
+        <div class="tutorial-step">
+          <h3>Step 1: Create an Account</h3>
+          <p>Click the "Profile" button in the top-right corner to open the account panel. Fill in your email and password, then click "Sign Up" to create your account. You can also sign in with Google for faster access.</p>
+        </div>
+        <div class="tutorial-step">
+          <h3>Step 2: Download the App</h3>
+          <p>Once signed in, the download button will be unlocked. Click "Download Video Wallpaper for Windows" to download the installer file (VideoWallpaper.exe).</p>
+        </div>
+        <div class="tutorial-step">
+          <h3>Step 3: Install the App</h3>
+          <p>Run the downloaded .exe file and follow the installation wizard. Choose your preferred installation location and complete the setup.</p>
+        </div>
+        <div class="tutorial-step">
+          <h3>Step 4: Launch the App</h3>
+          <p>After installation, launch Video Wallpaper from your desktop or start menu. The app will appear in your system tray.</p>
+        </div>
+        <div class="tutorial-step">
+          <h3>Step 5: Choose Your Video</h3>
+          <p>Right-click the app icon in the system tray and select "Open" or "Settings". Browse and select your desired video file from your computer.</p>
+        </div>
+        <div class="tutorial-step">
+          <h3>Step 6: Set as Wallpaper</h3>
+          <p>In the app settings, click "Apply" or "Set as Wallpaper". Your desktop background will now display the live video. You can adjust playback settings like volume, loop, and quality.</p>
+        </div>
+        <div class="tutorial-step">
+          <h3>Tips & Troubleshooting</h3>
+          <p>- Ensure your video file is in a supported format (MP4, AVI, etc.)<br>- For best performance, use videos under 100MB<br>- If the wallpaper doesn't apply, try running the app as administrator<br>- Check Windows settings to allow the app to run in the background</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Download Button -->
+    <a href="dist/Video%20Wallpaper%20Setup%201.0.0.exe" download="Video Wallpaper Setup 1.0.0.exe" id="downloadBtn" class="btn" onclick="return downloadApp(event)">Download Video Wallpaper for Windows</a>
+
+    <div class="description">
+      <p>Video Wallpaper is a lightweight and modern desktop application that allows users to set live video wallpapers on their Windows PC. Instead of static images, users can enjoy dynamic, high-quality video backgrounds that bring their desktop to life.</p>
+      <p>The app features a simple and user-friendly interface, making it easy for anyone to browse, select, and apply video wallpapers with just a few clicks. It supports smooth playback, minimal performance usage, and customizable settings to ensure a seamless experience.</p>
+      <p>Whether you want aesthetic visuals, gaming scenes, nature backgrounds, or futuristic animations, Video Wallpaper lets you personalize your desktop in a unique and visually stunning way.</p>
+      <p><strong>Features:</strong></p>
+      <ul>
+        <li>Easy-to-use interface</li>
+        <li>High-quality video wallpapers</li>
+        <li>Smooth performance optimization</li>
+        <li>Lightweight and fast</li>
+        <li>Customizable playback settings</li>
+      </ul>
+      <p>Experience the future of desktop customization with Video Wallpaper. Our app is designed for Windows users who want to elevate their computing experience without compromising on performance. Download now and transform your desktop into a dynamic visual masterpiece!</p>
+    </div>
+
+    <div class="video">
+      <h2>Watch Tutorial</h2>
+      <video controls>
+        <source src="demo.mp4" type="video/mp4">
+        Your browser does not support the video tag. Replace with your own video file.
+      </video>
+    </div>
+
+    <div class="account" id="accountPanel">
+      <div class="close-profile" onclick="toggleProfilePanel()">×</div>
+      <div class="form-container">
+        <h2>Create an Account</h2>
+        <form id="authForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="btn-form" id="submitBtn">Sign Up</button>
+          <button type="button" class="google-btn" id="googleBtn" onclick="signInWithGoogle()">
+            <svg class="icon" viewBox="0 0 24 24">
+              <path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Continue with Google
+            <div class="spinner" id="spinner"></div>
+          </button>
+        </form>
+        <div class="toggle" onclick="toggleForm()">Already have an account? Sign In</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      By Prosep • Free • Lightweight • Cool UI
+    </div>
+  </div>
+
+  <script>
+    let isSignUp = true;
+    let isSignedIn = false;
+
+    function downloadApp(event) {
+      // Download is available to everyone
+      return true;
+    }
+
+    function toggleForm() {
+      isSignUp = !isSignUp;
+      const submitBtn = document.getElementById('submitBtn');
+      const toggleText = document.querySelector('.toggle');
+      if (isSignUp) {
+        submitBtn.textContent = 'Sign Up';
+        toggleText.textContent = 'Already have an account? Sign In';
+      } else {
+        submitBtn.textContent = 'Sign In';
+        toggleText.textContent = 'Don\'t have an account? Sign Up';
+      }
+    }
+
+    function signInWithGoogle() {
+      const btn = document.getElementById('googleBtn');
+      const spinner = document.getElementById('spinner');
+      btn.classList.add('loading');
+      spinner.style.display = 'block';
+      btn.disabled = true;
+      setTimeout(() => {
+        alert('Google sign-in would be implemented here. Redirect to Google OAuth.');
+        btn.classList.remove('loading');
+        spinner.style.display = 'none';
+        btn.disabled = false;
+        // Example: window.location.href = 'https://accounts.google.com/oauth/...';
+      }, 2000); // Simulate loading
+    }
+
+    let currentSlide = 0;
+    let slides = [];
+
+    function previewPhotos() {
+      const input = document.getElementById('photoUpload');
+      const slideshow = document.getElementById('slideshow');
+      slideshow.innerHTML = `
+        <div class="controls">
+          <button class="control" onclick="prevSlide()">&#10094;</button>
+          <button class="control" onclick="nextSlide()">&#10095;</button>
+        </div>
+      `;
+      slides = [];
+      Array.from(input.files).forEach((file, index) => {
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'slide';
+            if (index === 0) img.classList.add('active');
+            slideshow.appendChild(img);
+            slides.push(img);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      slideshow.style.display = 'block';
+    }
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function toggleProfilePanel() {
+      const panel = document.getElementById('accountPanel');
+      panel.classList.toggle('open');
+      if (panel.classList.contains('open')) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
+    }
+
+    document.getElementById('authForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      if (isSignUp) {
+        alert(`Account created for ${email}`);
+      } else {
+        alert(`Signed in as ${email}`);
+      }
+      isSignedIn = true;
+      document.getElementById('profileLabel').textContent = 'Profile ✓';
+      toggleProfilePanel();
+    });
+  </script>
+</body>
+</html>
